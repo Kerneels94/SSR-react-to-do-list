@@ -1,6 +1,16 @@
 import { FaPlusCircle } from "react-icons/fa";
 
-const TodoForm = ({ userInputField, addTodoItemToList, setUserInputField }) => {
+interface TodoFormProps {
+  userInputField: string;
+  addTodoItemToList: () => void;
+  setUserInputField: (value: string) => void;
+}
+
+const TodoForm = ({
+  userInputField,
+  addTodoItemToList,
+  setUserInputField,
+}: TodoFormProps) => {
   return (
     <>
       <form>

@@ -7,18 +7,23 @@ const token =
   "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTM5OTY0NzksImlkIjoiZTcwZTcxZjEtNGNhMC0xMWVlLTgwZDUtMTJiNWY3OWJkNDUzIn0.HQdquK9YTGid7u0bhj9RBylIA7UkCcoQ1LvrnC1YFOOmorQ81HiZZZ4MzHv8N0OopZ2bf9QsWUM9jHr3zm-LAw";
 const url = "https://todos.appsquare.io";
 
+interface DataProps {
+  title: string;
+  completed: boolean;
+}
+
 const Todo = () => {
   // Create state variables
   const [userInputField, setUserInputField] = useState("");
-  const [list, setList] = useState([]);
+  const [list, setList] = useState([{ id: 0, title: "", completed: false }]);
   // Editing state variables
-  const [editingValue, setEditingValue] = useState([]);
+  const [editingValue, setEditingValue] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   // Checkbox state variable
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
 
   // Data object passed to the api endpoint
-  let data = {
+  let data: DataProps = {
     title: userInputField,
     completed: checked,
   };
@@ -44,7 +49,8 @@ const Todo = () => {
   };
 
   // Add to do item
-  const addTodoItemToList = async () => {
+  const addTodoItemToList = async (e) => {
+    e.preventDefault();
     // Using a post request post the data to the api endpoint
     try {
       await axios.post(`${url}/todos`, data, {
@@ -75,7 +81,7 @@ const Todo = () => {
   };
 
   // Delete Item function
-  const deleteTodoItem = async (id) => {
+  const deleteTodoItem = async (id: number) => {
     // using Axios make a delete request passing in the id of the todo item so that we delete the right to-do
     try {
       await axios.delete(`${url}/todos/${id}`, {
@@ -93,10 +99,10 @@ const Todo = () => {
   };
 
   // Edit to do function
-  const editTodoData = async (id) => {
+  const editTodoData = async (id: number) => {
     // Update data object with the edited value
     data = {
-      title: editingValue,
+      title: editingValue ?? "",
       completed: checked,
     };
 
@@ -117,6 +123,7 @@ const Todo = () => {
     // Update the list -> Make a copy of the list - adding the new edited value to the object
     setList([...list, { id: id, title: editingValue, completed: false }]);
 
+    console.log(editingValue);
     // Set editing state to false
     setIsEditing(false);
   };

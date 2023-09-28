@@ -1,5 +1,18 @@
 import { FaTrash, FaPenSquare } from "react-icons/fa";
 
+interface TodoListProps {
+  id: number;
+  title: string;
+  deleteTodoItem?: (id: number) => void;
+  editingValue?: [];
+  setEditingValue?: (value: string) => void;
+  editTodoData?: (id: number) => void;
+  setIsEditing?: (value: boolean) => void;
+  isEditing?: boolean;
+  handleCheckbox?: () => void;
+  checked?: boolean;
+}
+
 const TodoList = ({
   id,
   title,
@@ -11,7 +24,7 @@ const TodoList = ({
   isEditing,
   handleCheckbox,
   checked,
-}) => {
+}: TodoListProps) => {
   return (
     <>
       {isEditing ? (
@@ -30,7 +43,7 @@ const TodoList = ({
             <button
               className="px-2 py-2 text-xl hover:text-blue-300"
               type="submit"
-              onClick={() => editTodoData(id)}
+              onClick={() => editTodoData(id!)}
             >
               <FaPenSquare />
             </button>
@@ -39,8 +52,12 @@ const TodoList = ({
       ) : (
         <li className="flex flex-row gap-1 items-center justify-center">
           <label className="flex gap-1">
-            <input type="checkbox" onChange={handleCheckbox} value={checked} />
-            <p key={id}>{title}</p>
+            <input
+              type="checkbox"
+              onChange={handleCheckbox}
+              checked={checked}
+            />
+            <p>{title}</p>
           </label>
           <div className="button-container flex flex-1">
             <button
